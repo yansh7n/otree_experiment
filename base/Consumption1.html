@@ -1,0 +1,94 @@
+{{ block title }}
+    决策阶段
+{{ endblock }}
+{{ block content }}
+<div>
+    <ul>
+        <li>当前为第{{ group.cycle }}个周期的第{{ group.period }}轮，</li>
+        <li>本轮你的收入为{{ player.income }}点，当前你的可支配总收入为{{ player.wealth }}点。</li>
+    </ul>
+</div>
+
+{{ formfields }}
+
+<div>
+    <p>
+        请选择消费值（允许超前消费），在本轮用于购买积分：
+        <input id="consumption" type="number" placeholder="请输入消费值">
+        ，你的消费能够买到的积分为
+        <b><span class="utility" id="utility"></span></b>
+    </p>
+</div>
+
+<div>
+    <p>
+    <h4>历史数据</h4>
+    </p>
+</div>
+<table class="table">
+    <tr>
+        <td><b>周期-轮次</b></td>
+        <td><b>收入</b></td>
+        <td><b>消费</b></td>
+        <td><b>储蓄</b></td>
+        <td><b>积分</b></td>
+
+    </tr>
+    {{ for p in cycle_data }}
+    <tr>
+        <td>{{ p.cycle }}-{{ p.period }}</td>
+        <td>{{ p.income }}</td>
+        <td>{{ p.consumption }}</td>
+        <td>{{ p.saving }}</td>
+        <td>{{ p.utility }}</td>
+    </tr>
+    {{ endfor }}
+    <tr>
+        <td><b>总计</b></td>
+        <td>{{ player.total_income }}</td>
+        <td>{{ player.total_consume }}</td>
+        <td></td>
+        <td>{{ player.total_utility }}</td>
+
+    </tr>
+</table>
+
+<button class="otree-btn-next btn btn-primary" id="btn">确定</button>
+
+<script>
+    const consumptionInput = document.getElementById('consumption');
+    const utilityOutput = document.getElementById('utility');
+    const button = document.getElementById('btn');
+
+    // 实时更新积分值
+    consumptionInput.addEventListener('input', () => {
+        const consumption = parseFloat(consumptionInput.value);
+        utilityOutput.textContent = !isNaN(consumption)
+            ? (250 * (1 - Math.exp(-0.02 * consumption))).toFixed(2)
+            : '';
+    });
+
+    // 检查输入值并发送
+    button.addEventListener('click', (event) => {
+
+        const consumptionValue = consumptionInput.value.trim(); // 获取输入值，去掉多余空格
+
+        if (consumptionValue === '' || isNaN(consumptionValue) || consumptionValue < 0 || consumptionValue > 200) {
+            // 如果为空或非数字，显示错误提示并阻止操作
+            event.preventDefault(); // 阻止默认表单提交行为
+            alert('请填写有效的消费值！');
+            return;
+        }
+
+        // 确保 consumption 是浮点数类型
+        let consumption = parseFloat(parseFloat(consumptionValue).toFixed(2));
+
+        // 调用 liveSend 将浮点数值发送到服务器
+        liveSend(consumption);
+    });
+</script>
+
+
+{{ endblock }}
+
+

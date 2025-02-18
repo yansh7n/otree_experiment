@@ -1,0 +1,33 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}调查{{ endblock }}
+
+{{ block content }}
+
+<p>在实验的过程中您是怎么对下一期收入进行预测的？</p>
+<textarea name='feedback1' style="height:200px;width:900px;word-break:break-all"></textarea>
+<p>在实验过程中您是怎么对本期总收入进行的预测？</p>
+<textarea name='feedback2' style="height:200px;width:900px;word-break:break-all"></textarea>
+<p>您有没有按照预期总收入平均分配消费？如果没有，您是怎么决定自己本期的消费的？</p>
+<textarea name='feedback3' style="height:200px;width:900px;word-break:break-all"></textarea>
+<p>您觉得实验中哪些信息对您的决策是最有用的？</p>
+<textarea name='feedback4' style="height:200px;width:900px;word-break:break-all"></textarea>
+{{ if player.type == 2 }}
+<p>您觉得暂时冲击对您的决策有影响吗？</p>
+<textarea name='feedback6' style="height:200px;width:900px;word-break:break-all"></textarea>
+{{ endif }}
+{{ if player.type == 3 }}
+<p>当您在做决策的时候，您如何判断冲击更有可能是暂时冲击还是永久冲击？</p>
+<textarea name='feedback7' style="height:200px;width:900px;word-break:break-all"></textarea>
+<p>您更担心的是永久冲击还是暂时冲击？</p>
+<textarea name='feedback8' style="height:200px;width:900px;word-break:break-all"></textarea>
+{{ endif }}
+{{ if player.type == 4 }}
+<p>您觉得第3/4期和第5/6期您在做决策的时候有什么区别？</p>
+<textarea name='feedback9' style="height:200px;width:900px;word-break:break-all"></textarea>
+{{ endif }}
+<p>您有什么其他对实验的改进建议吗？</p>
+<textarea name='feedback5' style="height:200px;width:900px;word-break:break-all"></textarea>
+
+<center><button class="otree-btn-next btn btn-primary">下一步</button></center>
+
+{{ endblock }}
